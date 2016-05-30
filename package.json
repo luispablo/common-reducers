@@ -1,0 +1,23 @@
+{
+  "name": "common-reducers",
+  "version": "1.0.0",
+  "description": "Redux reducers you'll probably need in any webapp.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/*.js | faucet"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luispablo/common-reducers.git"
+  },
+  "keywords": [
+    "redux",
+    "reducers"
+  ],
+  "author": "@luispablo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luispablo/common-reducers/issues"
+  },
+  "homepage": "https://github.com/luispablo/common-reducers#readme"
+}
