@@ -15,7 +15,7 @@ test("index - imports", assert => {
 });
 
 test("index - require application and assign", assert => {
-	const { setParam } = application;
+	const setParam = application.setParam;
 	assert.equal(typeof(setParam), "function", "It's a function");
 	assert.end();
 });

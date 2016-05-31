@@ -5,12 +5,23 @@ const application = require("../lib/application");
 const setParam = application.setParam;
 const setFetchingFunction = application.setFetchingFunction;
 const removeFetchingFunction = application.removeFetchingFunction;
+const isFetching = application.isFetching;
 
 const store = createStore(application);
 
 test("application - initial state", assert => {
-	const expectedInitialState = { params: {}, fetchingFunctions: {} };
+	const expectedInitialState = { params: {}, fetchingFunctions: {}, isFetching };
 	assert.deepEqual(store.getState(), expectedInitialState, "The expected initial state");
+	assert.end();
+});
+
+test("application - isFetching", assert => {
+	const dummyFunc = "dummyFunc";
+	assert.notOk(store.getState().isFetching(dummyFunc), "Not yet fetching");
+	store.dispatch(setFetchingFunction({dummyFunc: 1}));
+	assert.ok(store.getState().isFetching(dummyFunc), "Now it is fetching");
+	store.dispatch(removeFetchingFunction(dummyFunc));
+	assert.notOk(store.getState().isFetching(dummyFunc), "Not fetching anymore");
 	assert.end();
 });
 
