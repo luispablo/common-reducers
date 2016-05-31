@@ -98,8 +98,8 @@ This function returns a Promise, so use it as such.
 import { commonReducersFetcher } from "common-reducers";
 
 ...
-
-commonReducersFetcher("/api/items", { method: "GET" }).then(items => {
+// First param is function name that requests, second is the URL, third are the fetch function options
+commonReducersFetcher("requestItems", "/api/items", { method: "GET" }).then(items => {
 	// Everything taken care for you, use it wisely :)
 });
 ```
