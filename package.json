@@ -19,5 +19,13 @@
   "bugs": {
     "url": "https://github.com/luispablo/common-reducers/issues"
   },
-  "homepage": "https://github.com/luispablo/common-reducers#readme"
+  "homepage": "https://github.com/luispablo/common-reducers#readme",
+  "devDependencies": {
+    "@luispablo/test-helpers": "^1.0.0",
+    "redux": "^3.5.2",
+    "tape": "^4.5.1"
+  },
+  "dependencies": {
+    "redux-act": "^0.4.2"
+  }
 }
