@@ -99,7 +99,9 @@ import { commonReducersFetcher } from "common-reducers";
 
 ...
 // First param is function name that requests, second is the URL, third are the fetch function options
-commonReducersFetcher("requestItems", "/api/items", { method: "GET" }).then(items => {
+// The last two params are the fetcher (you can use the new fetch function) and the dispatch function,
+// provided by Redux
+commonReducersFetcher("requestItems", "/api/items", { method: "GET" }, fetch, dispatch).then(items => {
 	// Everything taken care for you, use it wisely :)
 });
 ```
