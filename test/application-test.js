@@ -10,18 +10,8 @@ const isFetching = application.isFetching;
 const store = createStore(application);
 
 test("application - initial state", assert => {
-	const expectedInitialState = { params: {}, fetchingFunctions: {}, isFetching };
+	const expectedInitialState = { params: {}, fetchingFunctions: {} };
 	assert.deepEqual(store.getState(), expectedInitialState, "The expected initial state");
-	assert.end();
-});
-
-test("application - isFetching", assert => {
-	const dummyFunc = "dummyFunc";
-	assert.notOk(store.getState().isFetching(dummyFunc), "Not yet fetching");
-	store.dispatch(setFetchingFunction({dummyFunc: 1}));
-	assert.ok(store.getState().isFetching(dummyFunc), "Now it is fetching");
-	store.dispatch(removeFetchingFunction(dummyFunc));
-	assert.notOk(store.getState().isFetching(dummyFunc), "Not fetching anymore");
 	assert.end();
 });
 

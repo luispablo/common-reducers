@@ -5,12 +5,14 @@ const application = require("../lib/application");
 const messages = require("../lib/messages");
 const Security = require("../lib/Security");
 const commonReducersFetcher = require("../lib/commonReducersFetcher");
+const isFetching = require("../lib/isFetching");
 
 test("index - imports", assert => {
 	assert.equal(index.application, application, "require application");
 	assert.equal(index.messages, messages, "require messages");
 	assert.equal(index.Security, Security, "require Security");
 	assert.equal(index.commonReducersFetcher, commonReducersFetcher, "require fetcher");
+	assert.equal(index.isFetching, isFetching, "require isFetching helper");
 	assert.end();
 });
 

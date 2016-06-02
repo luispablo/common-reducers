@@ -8,7 +8,7 @@ Redux reducers you'll probably need in any webapp.
 This reducer builds the following object in your store:
 
 ```
-{ params: {}, fetchingFunctions: {}, isFetching: [Function] }
+{ params: {}, fetchingFunctions: {} }
 ```
 
 and you can use it like this:
@@ -22,14 +22,16 @@ const { setParam, setFetchingFunction, removeFetchingFunction } = application;
 and then dispatch like any redux-act action:
 
 dispatch(setParam({key: "value"}));
-dispatch(setFetchingFunction({functionName: 0.5})); // This could be a progress value
-dispatch(removeFetchingFunction("functionName")); // Use the exact same function name you provided when setting
+dispatch(setFetchingFunction({dummyFunc: 0.5})); // This could be a progress value, and 'dummyFunc' is the function that invoked the server
+dispatch(removeFetchingFunction("dummyFunc")); // Use the exact same function name you provided when setting
 ```
 
-and when you want to know if a certain function is fetching data, do this:
+and when you want to know if a certain function is fetching data, then you have the helper function isFetching:
 
 ```
-store.application.isFetching("functionName")
+import { isFetching } from "common-reducers";
+
+const isDummyFuncFetching = isFetching(store.application, "dummyFunc"); // here you know if dummyFunc is still fetching or has already ended.
 ```
 
 ## A 'messages' reducer
