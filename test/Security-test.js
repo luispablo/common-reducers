@@ -59,6 +59,12 @@ test("Security - store JWT", assert => {
 	assert.end();
 });
 
+test("Security - requestJWTValidation with correct URI", assert => {
+	assert.plan(1);
+	const fetcher = (URL) => assert.equal(URL, "/api/auth/validate_token", "The URI must have a / at the beginning");
+	Security.requestJWTValidation(JWT, fetcher, () => null);
+});
+
 test("Security - requestJWTValidation", assert => {
 	assert.plan(7);
 
@@ -71,6 +77,12 @@ test("Security - requestJWTValidation", assert => {
 	Security.requestJWTValidation(JWT, fetcherUnauthorized, dispatch);
 });
 
+test("Security - requestNewJWT with correct URI", assert => {
+	assert.plan(1);
+	const fetcher = (URL) => assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning");
+	Security.requestNewJWT(USERNAME, PASSWORD, fetcher, () => null);
+});
+
 test("Security - requestNewJWT", assert => {
 	assert.plan(7);
 
@@ -80,6 +92,12 @@ test("Security - requestNewJWT", assert => {
 		assert.ok(jwt !== null, "Devuelve el nuevo JWT");
 	});
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherUnauthorized, dispatch);
+});
+
+test("Security - requestJWTRevoke with correct URI", assert => {
+	assert.plan(1);
+	const fetcher = (URL) => assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning");
+	Security.requestJWTRevoke(JWT, fetcher, () => null);
 });
 
 test("Security - requestJWTRevoke", assert => {
