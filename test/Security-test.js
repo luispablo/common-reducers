@@ -4,6 +4,7 @@ const DispatchMock = require("@luispablo/test-helpers").DispatchMock;
 const FetcherMock = require("@luispablo/test-helpers").FetcherMock;
 const createStore = require("redux").createStore;
 const Security = require("../lib/Security");
+const SecurityException = require("../lib/SecurityException");
 
 const clearJWT = Security.clearJWT;
 const restoreJWT = Security.restoreJWT;
@@ -84,21 +85,27 @@ test("Security - requestNewJWT with correct URI", assert => {
 });
 
 test("Security - requestNewJWT", assert => {
-	assert.plan(8);
-
-	const dispatch = DispatchMock(assert, ["store JWT", "add error message", "set fetching function", "remove fetching function"]);
-
+	assert.plan(4);
+	const dispatch = DispatchMock(assert, ["store JWT", "fetching function"]);
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherOKWithJWT, dispatch).then(jwt => {
 		assert.ok(jwt !== null, "Returns same JWT");
 	});
-	Security.requestNewJWT(USERNAME, PASSWORD, fetcherUnauthorized, dispatch);
 });
 
-test("Security - requestNewJWT invalid username or password", assert =>{
-	assert.plan(5);
-	const dispatch = DispatchMock(assert, ["add error message", "fetching function"]);
+test("Security - requestNewJWT 401", assert =>{
+	assert.plan(3);
+	const dispatch = DispatchMock(assert, ["fetching function"]);
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherUnauthorized, dispatch).catch(err => {
-		assert.equal(err.message, "Usuario o contraseña inválidos", "Throughs an error");
+		assert.equal(err.code, 401, "HTTP 401: Unauthorized");
+	});
+});
+
+test("Security - requestNewJWT 403", assert => {
+	assert.plan(3);
+	const dispatch = DispatchMock(assert, ["fetching function"]);
+	const fetcherForbidden = FetcherMock({ status: 403 });
+	Security.requestNewJWT(USERNAME, PASSWORD, fetcherForbidden, dispatch).catch(err => {
+		assert.equal(err.code, 403, "HTTP 403: Forbidden");
 	});
 });
 
