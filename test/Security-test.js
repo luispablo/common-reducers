@@ -17,8 +17,8 @@ const storageMock = LocalStorageMock();
 const store = createStore(Security(storageMock));
 const JWT = { user: USERNAME };
 
-const fetcherUnauthorized = FetcherMock({status: 401});
-const fetcherOKWithJWT = FetcherMock({ status: 200, json: () => JWT });
+const fetcherUnauthorized = FetcherMock({ status: 401 });
+const fetcherOKWithJWT = FetcherMock({ json: JWT });
 
 test("Security - initial state", assert => {
 	const expectedInitialState = { JWT: null, validatedJWT: false };
@@ -84,14 +84,22 @@ test("Security - requestNewJWT with correct URI", assert => {
 });
 
 test("Security - requestNewJWT", assert => {
-	assert.plan(7);
+	assert.plan(8);
 
 	const dispatch = DispatchMock(assert, ["store JWT", "add error message", "set fetching function", "remove fetching function"]);
 
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherOKWithJWT, dispatch).then(jwt => {
-		assert.ok(jwt !== null, "Devuelve el nuevo JWT");
+		assert.ok(jwt !== null, "Returns same JWT");
 	});
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherUnauthorized, dispatch);
+});
+
+test("Security - requestNewJWT invalid username or password", assert =>{
+	assert.plan(5);
+	const dispatch = DispatchMock(assert, ["add error message", "fetching function"]);
+	Security.requestNewJWT(USERNAME, PASSWORD, fetcherUnauthorized, dispatch).catch(err => {
+		assert.equal(err.message, "Usuario o contraseña inválidos", "Throughs an error");
+	});
 });
 
 test("Security - requestJWTRevoke with correct URI", assert => {

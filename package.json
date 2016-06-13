@@ -1,6 +1,6 @@
 {
   "name": "common-reducers",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Redux reducers you'll probably need in any webapp.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/luispablo/common-reducers#readme",
   "devDependencies": {
-    "@luispablo/test-helpers": "^1.0.0",
+    "@luispablo/test-helpers": "^1.1.0",
     "redux": "^3.5.2",
     "tape": "^4.5.1"
   },
