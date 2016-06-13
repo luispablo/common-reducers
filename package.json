@@ -4,7 +4,8 @@
   "description": "Redux reducers you'll probably need in any webapp.",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/*.js | faucet"
+    "test": "tape test/*.js | faucet",
+	 "lint": "eslint *.js lib/*.js"
   },
   "repository": {
     "type": "git",
