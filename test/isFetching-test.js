@@ -1,5 +1,5 @@
 const test = require("tape");
-const isFetching = require("../lib/isFetching");
+const isFetching = require("../src/isFetching");
 
 const store = { fetchingFunctions: { testFunction: 1, undefinedFunc: undefined } };
 

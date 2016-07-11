@@ -1,11 +1,11 @@
 const test = require("tape");
-const index = require("../index");
+const index = require("../src/index");
 
-const application = require("../lib/application");
-const messages = require("../lib/messages");
-const Security = require("../lib/Security");
-const commonReducersFetcher = require("../lib/commonReducersFetcher");
-const isFetching = require("../lib/isFetching");
+const application = require("../src/application");
+const messages = require("../src/messages");
+const Security = require("../src/Security");
+const commonReducersFetcher = require("../src/commonReducersFetcher");
+const isFetching = require("../src/isFetching");
 
 test("index - imports", assert => {
 	assert.equal(index.application, application, "require application");

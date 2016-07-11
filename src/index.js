@@ -1,8 +1,8 @@
-var application = require("./lib/application");
-var messages = require("./lib/messages");
-var Security = require("./lib/Security");
-var commonReducersFetcher = require("./lib/commonReducersFetcher");
-var isFetching = require("./lib/isFetching");
+var application = require("./application");
+var messages = require("./messages");
+var Security = require("./Security");
+var commonReducersFetcher = require("./commonReducersFetcher");
+var isFetching = require("./isFetching");
 
 module.exports = {
 	application: application,

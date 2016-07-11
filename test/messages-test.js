@@ -1,6 +1,6 @@
 const test = require("tape");
 const createStore = require("redux").createStore;
-const messages = require("../lib/messages");
+const messages = require("../src/messages");
 
 const messageType = messages.messageType;
 const store = createStore(messages);

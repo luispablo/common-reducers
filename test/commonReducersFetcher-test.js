@@ -1,5 +1,5 @@
 const test = require("tape");
-const fetcher = require("../lib/commonReducersFetcher");
+const fetcher = require("../src/commonReducersFetcher");
 const FetcherMock = require("@luispablo/test-helpers").FetcherMock;
 const DispatchMock = require("@luispablo/test-helpers").DispatchMock;
 

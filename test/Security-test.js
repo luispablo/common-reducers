@@ -3,8 +3,8 @@ const LocalStorageMock = require("@luispablo/test-helpers").LocalStorageMock;
 const DispatchMock = require("@luispablo/test-helpers").DispatchMock;
 const FetcherMock = require("@luispablo/test-helpers").FetcherMock;
 const createStore = require("redux").createStore;
-const Security = require("../lib/Security");
-const SecurityException = require("../lib/SecurityException");
+const Security = require("../src/Security");
+const SecurityException = require("../src/SecurityException");
 
 const clearJWT = Security.clearJWT;
 const restoreJWT = Security.restoreJWT;

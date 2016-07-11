@@ -1,6 +1,6 @@
 const test = require("tape");
 const createStore = require("redux").createStore;
-const application = require("../lib/application");
+const application = require("../src/application");
 
 const setParam = application.setParam;
 const setFetchingFunction = application.setFetchingFunction;
