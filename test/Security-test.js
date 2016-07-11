@@ -21,13 +21,13 @@ const JWT = { user: USERNAME };
 const fetcherUnauthorized = FetcherMock({ status: 401 });
 const fetcherOKWithJWT = FetcherMock({ json: JWT });
 
-test("Security - initial state", assert => {
+test("Security - initial state", function (assert) {
 	const expectedInitialState = { JWT: null, validatedJWT: false };
 	assert.deepEqual(store.getState(), expectedInitialState, "Expected initial state");
 	assert.end();
 });
 
-test("Security - clearJWT", assert => {
+test("Security - clearJWT", function (assert) {
 	store.getState().JWT = JWT;
 	assert.ok(store.getState().JWT !== null, "Exists before action");
 	store.dispatch(clearJWT());
@@ -35,7 +35,7 @@ test("Security - clearJWT", assert => {
 	assert.end();
 });
 
-test("Security - restoreJwt", assert => {
+test("Security - restoreJwt", function (assert) {
 	store.dispatch(restoreJWT());
 	assert.equal(store.getState().JWT, null, "Local storage has nothing");
 	storageMock.setItem("JWT", JSON.stringify(JWT));
@@ -44,13 +44,13 @@ test("Security - restoreJwt", assert => {
 	assert.end();
 });
 
-test("Security - validateJWT", assert => {
+test("Security - validateJWT", function (assert) {
 	store.dispatch(validateJWT(JWT));
 	assert.ok(store.getState().validatedJWT, "JWT's been validated");
 	assert.end();
 });
 
-test("Security - store JWT", assert => {
+test("Security - store JWT", function (assert) {
 	storageMock.removeItem("JWT");
 	store.dispatch(storeJWT(JWT));
 
@@ -60,13 +60,13 @@ test("Security - store JWT", assert => {
 	assert.end();
 });
 
-test("Security - requestJWTValidation with correct URI", assert => {
+test("Security - requestJWTValidation with correct URI", function (assert) {
 	assert.plan(1);
 	const fetcher = (URL) => assert.equal(URL, "/api/auth/validate_token", "The URI must have a / at the beginning");
 	Security.requestJWTValidation(JWT, fetcher, () => null);
 });
 
-test("Security - requestJWTValidation", assert => {
+test("Security - requestJWTValidation", function (assert) {
 	assert.plan(7);
 
 	const fetcherOK = FetcherMock({status: 200});
@@ -78,13 +78,13 @@ test("Security - requestJWTValidation", assert => {
 	Security.requestJWTValidation(JWT, fetcherUnauthorized, dispatch);
 });
 
-test("Security - requestNewJWT with correct URI", assert => {
+test("Security - requestNewJWT with correct URI", function (assert) {
 	assert.plan(1);
 	const fetcher = (URL) => assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning");
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcher, () => null);
 });
 
-test("Security - requestNewJWT", assert => {
+test("Security - requestNewJWT", function (assert) {
 	assert.plan(4);
 	const dispatch = DispatchMock(assert, ["store JWT", "fetching function"]);
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherOKWithJWT, dispatch).then(jwt => {
@@ -92,7 +92,7 @@ test("Security - requestNewJWT", assert => {
 	});
 });
 
-test("Security - requestNewJWT 401", assert =>{
+test("Security - requestNewJWT 401", function (assert){
 	assert.plan(3);
 	const dispatch = DispatchMock(assert, ["fetching function"]);
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherUnauthorized, dispatch).catch(err => {
@@ -100,7 +100,7 @@ test("Security - requestNewJWT 401", assert =>{
 	});
 });
 
-test("Security - requestNewJWT 403", assert => {
+test("Security - requestNewJWT 403", function (assert) {
 	assert.plan(3);
 	const dispatch = DispatchMock(assert, ["fetching function"]);
 	const fetcherForbidden = FetcherMock({ status: 403 });
@@ -109,13 +109,13 @@ test("Security - requestNewJWT 403", assert => {
 	});
 });
 
-test("Security - requestJWTRevoke with correct URI", assert => {
+test("Security - requestJWTRevoke with correct URI", function (assert) {
 	assert.plan(1);
-	const fetcher = (URL) => assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning");
-	Security.requestJWTRevoke(JWT, fetcher, () => null);
+	const fetcher = function (URL) { return assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning"); };
+	Security.requestJWTRevoke(JWT, fetcher, function () { return null; });
 });
 
-test("Security - requestJWTRevoke", assert => {
+test("Security - requestJWTRevoke", function (assert) {
 	assert.plan(3);
 
 	Security.requestNewJWT(USERNAME, PASSWORD, fetcherOKWithJWT, (action) => null).then(jwt => {
