@@ -14,7 +14,7 @@ test("commonReducersFetcher - fetch URL and options", assert => {
 		assert.equal(url, testURL, "Uses the given URL");
 		assert.deepEqual(options, testOptions, "Uses the given options");
 	};
-	fetcher(functionName, testURL, testOptions, mockFetch, mockDispatch);
+	fetcher(functionName, testURL, testOptions, mockFetch, mockDispatch).catch(() => null);
 });
 
 test("commonReducersFetcher - actions dispatched with HTTP 200", assert => {

@@ -63,7 +63,7 @@ test("Security - store JWT", function (assert) {
 test("Security - requestJWTValidation with correct URI", function (assert) {
 	assert.plan(1);
 	const fetcher = (URL) => assert.equal(URL, "/api/auth/validate_token", "The URI must have a / at the beginning");
-	Security.requestJWTValidation(JWT, fetcher, () => null);
+	Security.requestJWTValidation(JWT, fetcher, () => null).then(() => null).catch(() => null);
 });
 
 test("Security - requestJWTValidation", function (assert) {
@@ -74,14 +74,14 @@ test("Security - requestJWTValidation", function (assert) {
 
 	Security.requestJWTValidation(JWT, fetcherOK, dispatch).then(() => {
 		assert.pass("Must work as a promise");
-	});
-	Security.requestJWTValidation(JWT, fetcherUnauthorized, dispatch);
+	}).catch(() => null);
+	Security.requestJWTValidation(JWT, fetcherUnauthorized, dispatch).then(() => null).catch(() => null);
 });
 
 test("Security - requestNewJWT with correct URI", function (assert) {
 	assert.plan(1);
 	const fetcher = (URL) => assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning");
-	Security.requestNewJWT(USERNAME, PASSWORD, fetcher, () => null);
+	Security.requestNewJWT(USERNAME, PASSWORD, fetcher, () => null).catch(() => null);
 });
 
 test("Security - requestNewJWT", function (assert) {
@@ -112,7 +112,7 @@ test("Security - requestNewJWT 403", function (assert) {
 test("Security - requestJWTRevoke with correct URI", function (assert) {
 	assert.plan(1);
 	const fetcher = function (URL) { return assert.equal(URL, "/api/auth/token", "The URI must have a / at the beginning"); };
-	Security.requestJWTRevoke(JWT, fetcher, function () { return null; });
+	Security.requestJWTRevoke(JWT, fetcher, function () { return null; }).catch(() => null);
 });
 
 test("Security - requestJWTRevoke", function (assert) {
