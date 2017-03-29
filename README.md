@@ -57,10 +57,19 @@ and the other *add* actions take only text as param, and adds a message object t
 
 ## A 'Security' reducer
 
-It builds the following object in your Redux store: ```{ JWT: null, validatedJWT: false }```
+It builds the following object in your Redux store: 
+
+```javascript
+  { 
+    JWT: null, // JSON Web Token (default null, null if invalid, [object] if present and valid)
+    isValidatingJWT: false, // is it waiting server validation? (default false)
+    validatedJWT: false // has the server responded if the JWT is valid? (default false)
+  }
+```
+
 This reducer stores the JWT in your HTML5 local storage for persistence, and uses the *validatedJWT* value to know if the local stored JWT was validated by the server.
 
-You get the following actions:
+You get the following actions **to dispatch through Redux**:
 
 ```javascript
 import { Security } from "common-reducers";
@@ -68,30 +77,41 @@ import { Security } from "common-reducers";
 const { clearJWT, restoreJWT, storeJWT, validateJWT } = Security;
 ```
 
-*clearJWT* sets the JWT property to null
-*restoreJWT* get the JWT from the local storage and sets it in the Redux store
-*storeJWT* set a JWT in the Redux store and in the local storage too
-*validateJWT* sets the validatedJWT property to true
+* ```clearJWT``` - sets the JWT property to null
+* ```restoreJWT``` - get the JWT from the local storage and sets it in the Redux store
+* ```storeJWT``` - set a JWT in the Redux store and in the local storage too
+* ```validateJWT``` - sets the validatedJWT property to true
 
 This object also gives you the following helper functions:
 
 ```javascript
 import { Security } from "common-reducers";
 
-const { requestNewJWT, requestJWTRevoke, requestJWTValidation } = Security;
+const { requestNewJWT, requestJWTRevoke, requestJWTValidation, restoreValidatedLocalJWT } = Security;
 ```
 
-*requestNewJWT (username, password, fetcher, dispatch)*
+#### requestNewJWT (username, password, fetcher, dispatch)
+
 Takes 4 params, the first two are self explanatory, fetcher can be the 'fetch' function given by the runtime, and dispatch is the Redux function to dispatch actions.
+
 It POSTs a request to 'api/auth/token' and, if everything went well, uses *storeJWT* to save it.
+
 It returns a Promise; if everything is OK resolves with the JWT, if not, rejects with and error. The error is an instance of ```SecurityException```, that has code and message (401 authentication failed, 403 authorization failed, as in HTTP error codes)
 
-*requestJWTRevoke (jwt, fetcher, dispatch)*
+#### requestJWTRevoke (jwt, fetcher, dispatch)
+
 Issues a DELETE request to 'api/auth/token' and, if everything went OK, then triggers a clearJWT action.
 
-*requestJWTValidation (JWT, fetcher, dispatch)*
+#### requestJWTValidation (JWT, fetcher, dispatch)
+
 With a GET request to 'api/auth/validate_token', and the 'token' property of the JSON web token in the 'x-access-token' header of the protocol, validates the JWT.
 If the server responds with a 200 status, then a validateJWT action is triggered, if not, a clearJWT will be dispatched.
+
+#### restoreValidatedLocalJWT (fetcher, dispatch)
+
+Looks for a JWT in ```localStorage```. If it's not present, it resolves ```null``` and sets the ```validatedJWT``` property to ```true```, otherwise it sets ```isValidatingJWT``` to true and issues a server validation through ```requestJWTValidation```. When the server responds, it sets the ```isValidatingJWT``` to ```false``` and ```validatedJWT``` to ```true``` to indicate that this operation is done.
+
+If the token is valid it stores it in the ```JWT``` property and resolves it; otherwise it will remove it from ```localStorage``` and resolve ```null```.
 
 ## commonReducersFetcher
 

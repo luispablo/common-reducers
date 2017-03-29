@@ -9,7 +9,7 @@ const removeFetchingFunction = application.removeFetchingFunction;
 
 const JWT_LOCAL_STORAGE_KEY = "JWT";
 
-const initialState = { JWT: null, validatedJWT: false };
+const initialState = { JWT: null, isValidatingJWT: false, validatedJWT: false };
 
 const clearInvalidLocalJWT = (storage) => {
 	const stringJWT = storage.getItem(JWT_LOCAL_STORAGE_KEY);
@@ -37,8 +37,31 @@ const _storeJWT = (storage) => {
 
 const clearJWT = createAction("clear JWT");
 const restoreJWT = createAction("restore JWT");
+const setValidatingJWT = createAction("set validating JWT");
 const storeJWT = createAction("store JWT");
 const validateJWT = createAction("validate JWT");
+
+const restoreValidatedLocalJWT = function restoreValidatedLocalJWT (fetcher, dispatch, _storage) {
+  const storage = _storage || window.localStorage;
+
+  return new Promise(function (resolve) {
+    const localJWT = storage.getItem(JWT_LOCAL_STORAGE_KEY);
+
+    if (localJWT !== null) {
+      dispatch(setValidatingJWT(true));
+      requestJWTValidation(localJWT, fetcher, dispatch).then(function () {
+        dispatch(setValidatingJWT(false));
+        dispatch(restoreJWT());
+      }).catch(function () {
+        dispatch(setValidatingJWT(false));
+        dispatch(validateJWT());
+      });
+    } else {
+      dispatch(validateJWT());
+      resolve(null);
+    }
+  });
+};
 
 const requestJWTValidation = (JWT, fetcher, dispatch) => {
 	return new Promise((resolve, reject) => {
@@ -110,6 +133,7 @@ const Security = function (_storage) {
 	return createReducer({
 		[clearJWT]: (state) => Object.assign({}, state, { JWT: null }),
 		[restoreJWT]: getJWTFromLocalStorage(storage),
+		[setValidatingJWT]: (state, payload) => Object.assign({}, state, { isValidatingJWT: payload }),
 		[storeJWT]: _storeJWT(storage),
 		[validateJWT]: (state) => Object.assign({}, state, { validatedJWT: true })
 	}, initialState);
@@ -122,5 +146,7 @@ Security.validateJWT = validateJWT;
 Security.requestNewJWT = requestNewJWT;
 Security.requestJWTRevoke = requestJWTRevoke;
 Security.requestJWTValidation = requestJWTValidation;
+Security.restoreValidatedLocalJWT = restoreValidatedLocalJWT;
+Security.setValidatingJWT = setValidatingJWT;
 
 module.exports = Security;
