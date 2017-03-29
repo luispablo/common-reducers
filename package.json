@@ -25,6 +25,7 @@
   "homepage": "https://github.com/luispablo/common-reducers#readme",
   "devDependencies": {
     "@luispablo/test-helpers": "^1.1.0",
+    "babel-cli": "^6.24.0",
     "babel-preset-es2015": "^6.9.0",
     "tape": "^4.5.1"
   },
