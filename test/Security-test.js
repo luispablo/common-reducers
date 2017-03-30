@@ -90,34 +90,34 @@ test("Security - requestJWTValidation", function (assert) {
 });
 
 test("Security - restoreValidatedLocalJWT not in local storage", function (assert) {
-	assert.plan(2);
   storageMock.removeItem("JWT");
   const dispatch = DispatchMock(assert, ["validate JWT"]);
   restoreValidatedLocalJWT(null, dispatch, storageMock).then(function (JWT) {
 		assert.ok(JWT === null, "Resolves null");
+		assert.end();
 	});
 });
 
 test("Security - restoreValidatedLocalJWT valid in local storage", function (assert) {
-  assert.plan(6);
-  storageMock.setItem("JWT", JWT);
+	storageMock.setItem("JWT", JSON.stringify(JWT));
   
   const fetcherOK = FetcherMock({status: 200});
   const dispatch = DispatchMock(assert, ["set validating JWT", "validate JWT", "restore JWT", "fetching"]);
 
   restoreValidatedLocalJWT(fetcherOK, dispatch, storageMock).then(function (validatedJWT) {
-    assert.equal(validatedJWT, JWT, "Resolves local JWT");
+    assert.deepEqual(validatedJWT, JWT, "Resolves local JWT");
+		assert.end();
   });
 });
 
 test("Security - restoreValidatedLocalJWT invalid in local storage", function (assert) {
-  assert.plan(6);
-  storageMock.setItem("JWT", JWT);
+	storageMock.setItem("JWT", JSON.stringify(JWT));
   
   const dispatch = DispatchMock(assert, ["set validating JWT", "validate JWT", "clear JWT", "fetching"]);
 
   restoreValidatedLocalJWT(fetcherUnauthorized, dispatch, storageMock).then(function (validatedJWT) {
-    assert.ok(validatedJWT === null, "JWT invalid");
+    assert.equal(validatedJWT, null, "JWT invalid");
+		assert.end();
   });
 });
 

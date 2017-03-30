@@ -45,16 +45,19 @@ const restoreValidatedLocalJWT = function restoreValidatedLocalJWT (fetcher, dis
   const storage = _storage || window.localStorage;
 
   return new Promise(function (resolve) {
-    const localJWT = storage.getItem(JWT_LOCAL_STORAGE_KEY);
+		const stringJWT = storage.getItem(JWT_LOCAL_STORAGE_KEY);
+		const localJWT = (stringJWT !== null) ? JSON.parse(stringJWT) : null;
 
     if (localJWT !== null) {
       dispatch(setValidatingJWT(true));
       requestJWTValidation(localJWT, fetcher, dispatch).then(function () {
         dispatch(setValidatingJWT(false));
         dispatch(restoreJWT());
+				resolve(localJWT);
       }).catch(function () {
         dispatch(setValidatingJWT(false));
         dispatch(validateJWT());
+				resolve(null);
       });
     } else {
       dispatch(validateJWT());
