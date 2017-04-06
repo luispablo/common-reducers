@@ -34,6 +34,14 @@ import { isFetching } from "common-reducers";
 const isDummyFuncFetching = isFetching(store.application, "dummyFunc"); // here you know if dummyFunc is still fetching or has already ended.
 ```
 
+Else, if you want to know if _anything_ is fetching, you can do:
+
+```javascript
+import { isFetching } from "common-reducers";
+
+const isFetchingSomething = isFetching(store.application);
+```
+
 ## A 'messages' reducer
 
 This reducer builds the following object in your store:
