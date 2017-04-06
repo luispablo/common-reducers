@@ -5,7 +5,8 @@ const store = { fetchingFunctions: { testFunction: 1, undefinedFunc: undefined }
 
 test("isFetching - anything", function (assert) {
 	assert.ok(isFetching(store), "Something is fetching");
-	assert.notOk(isFetching({ fetchingFunctions: {} }), "Nothing is fetching");
+	assert.notOk(isFetching({ fetchingFunctions: { } }), "Fetching function is an empty object");
+	assert.notOk(isFetching({ fetchingFunctions: { notFeching: undefined } }), "Fetching function completed");
 	assert.end();
 });
 
