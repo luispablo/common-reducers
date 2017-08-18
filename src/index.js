@@ -3,11 +3,13 @@ var messages = require("./messages");
 var Security = require("./Security");
 var commonReducersFetcher = require("./commonReducersFetcher");
 var isFetching = require("./isFetching");
+var requestGET = require("./requestGET");
 
 module.exports = {
 	application: application,
-	messages: messages,
-	Security: Security,
 	commonReducersFetcher: commonReducersFetcher,
-	isFetching: isFetching
+	isFetching: isFetching,
+  messages: messages,
+  requestGET: requestGET,
+	Security: Security
 };

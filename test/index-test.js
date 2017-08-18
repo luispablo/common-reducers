@@ -5,6 +5,7 @@ const application = require("../src/application");
 const messages = require("../src/messages");
 const Security = require("../src/Security");
 const commonReducersFetcher = require("../src/commonReducersFetcher");
+const requestGET = require("../src/requestGET");
 const isFetching = require("../src/isFetching");
 
 test("index - imports", assert => {
@@ -12,7 +13,8 @@ test("index - imports", assert => {
 	assert.equal(index.messages, messages, "require messages");
 	assert.equal(index.Security, Security, "require Security");
 	assert.equal(index.commonReducersFetcher, commonReducersFetcher, "require fetcher");
-	assert.equal(index.isFetching, isFetching, "require isFetching helper");
+  assert.equal(index.isFetching, isFetching, "require isFetching helper");
+  assert.equal(index.requestGET, requestGET, "require requestGET");
 	assert.end();
 });
 
