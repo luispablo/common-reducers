@@ -144,3 +144,29 @@ commonReducersFetcher("requestItems", "/api/items", { method: "GET" }, fetch, di
 	// Everything taken care for you, use it wisely :)
 });
 ```
+
+### requestGET
+
+This helper simplifies even more the common case of using the ```commonReducersFetcher``` for when you need to ```GET``` some given resource, and dispatch an action with the result of such HTTP GET call.
+
+```javascript
+...
+import { requestGET } from "common-reducers";
+...
+
+// You have an action
+const appendItems = createAction("append items");
+// Such action stores items in the Redux store
+const reducer = createReducer({
+  ...
+  [appendItems]: (state, payload) => Object.assign({}, state, { items: payload }),
+  ...
+}, { items: [], ... });
+// If you need to GET from /api/items and afterwards dispatch appendItems, then you simply do
+const requestGETItems = requestGET("/api", "items", appendItems);
+
+...
+
+// Then, when you need to use it, invoke it with two params: the fetcher and the dispatch. i.e:
+requestGETItems(fetch, dispatch);
+```
